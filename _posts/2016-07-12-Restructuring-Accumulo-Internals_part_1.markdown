@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Restructuring Accumulo internals."
+title: "Restructuring Accumulo internals (Part 1)."
 date: 2016-07-12 12:43:00
 ---
 
@@ -84,73 +84,6 @@ and so was not attempted."
   code smell.
 
 
-Proposal
---------
-
-To address the above concerns, I'm proposing two related changes: Introducing
-dependency injection, and reorganizing Accumulo into a partially tiered
-architecture.
-
-Dependency Injection
-====================
-The main thrust of my proposal is that Accumulo make use of [dependency
-injection](https://en.wikipedia.org/wiki/Dependency_injection) to tie components
-together.
-
-In particular, I propose we use Google's
-[Guice](https://github.com/google/guice/blob/master/README.md) framework to
-manage the construction and wiring of Accumulo's object graph(s), and replace the
-use of both manual dependency injection and static singletons.
-
-Some investigation leads me to believe that the moving Accumulo to using
-dependency injection won't be straightforward.  Largely due to poor separation
-of concerns.  
-
-For example, each of Accumulo's server objects runs
-`Accumulo.init(...)` in its main routine.  `Accumulo.init(...)` runs around and
-touches on a whole bunch of separate initialization concerns, whose proper place
-is elsewhere.  One job of `Accumulo.init(...)` is to wait ZooKeeper to be ready; 
-ZooKeeper access objects should take this responsibility. 
-
-As such, I believe to make best use of dependency injection, we will need to
-redesign portions of Accumulo to better separate concerns.
-
-Partially Tiered Architecture
-=============================
-Better separation of concerns is a worthy goal on its own.  I don't have
-anything approaching a complete design in mind, but rather a sketch of a design.
-
-I propose arranging Accumulo's internals into a partially tiered architecture.
-Objects within a tier may communicate freely with/depend upon objects in lower tiers, and only indirectly with objects in higher tiers.
-
-Something roughly like this:
-
-![Proposed Architecture
-Sketch](/assets/AccumuloDesignSketch.png){:class="img-responsive"}
-
-In this sketch, I've imagined 4 tiers.  From top to bottom:
-* Exposed interfaces: Objects which coordinate the outside world's interaction
-  with Accumulo or with an Accumulo server process.  These will often make
-  changes directly to models, but may also spawn new actors (or invoke existing
-  ones).
-* Actor tier: Actors work with models and coordinate state-based changes
-  affecting one or more model.  Actors may either poll models for changes, or
-  receive notification via events or the (Observer pattern)[https://en.wikipedia.org/wiki/Observer_pattern).
-* Model tier: Models are primarily concerned with maintaining state.  They
-  expose interfaces to query and modify that state, and emit events or make
-  callbacks to notify interested actors about state changes.
-* Foundation tier: Fundamental software tools that are essentially independent
-  of Accumulo.  Managed thread pools, logging, event delivery.
-
-Challenges & Costs
-------------------
-
-Status Quo Antebellum
-=====================
-
-The Journey
-===========
-
-The Destination
-===============
-
+Up next
+-------
+In [Part 2](/2016/07/12/Restructuring-Accumulo-Internals_part_2.html), I outline my proposal for addressing these issues.
