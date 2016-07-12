@@ -2,7 +2,6 @@
 layout: post
 title: "Restructuring Accumulo internals."
 date: 2016-07-12 12:43:00
-categories: accumulo architecture
 ---
 
 Motivation
@@ -93,14 +92,12 @@ To address the above concerns, I'm proposing two related changes: Introducing
 dependency injection, and reorganizing Accumulo into a partially tiered
 architecture.
 
-Dependency Injection
-====================
-
-
 Partially Tiered Architecture
 =============================
 ![Proposed Architecture
 Sketch](/assets/AccumuloDesignSketch.png){:class="img-responsive"}
+
+I envision a 
 
 Challenges & Costs
 ------------------
