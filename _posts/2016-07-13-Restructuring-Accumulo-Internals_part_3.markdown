@@ -46,10 +46,10 @@ Roadmap
  * Generally speaking, classes which are just wrappers for data would remain outside
    the purvue of the DI framework.  For example, to get an instance of `KeyExtent`
    representing a specific tablet, one would write still write `new KeyExtent(...)`.
- * Logging will probably be an exception here.  In my vision, he logger's proper place
-   is as a foundation-tier element of the object graph.  That said, the cost of moving 
-   logging into DI framework is significant, and the potential gain from being able to 
-   replace the logger during testing is minimal.
+ * Logging will probably remain outside of the DI framework as well.  In my vision, 
+   the logger's proper place is as a foundation-tier element of the object graph.  
+   That said, the cost of moving logging into DI framework is significant, and 
+   the potential gain from being able to replace the logger during testing is minimal.
 5. As components become candidates for inclusion, refactor or rewrite those 
    components which don't fit into the partially tiered architecture.  Particularly 
    for those components which resist DI because of circular dependencies or 
