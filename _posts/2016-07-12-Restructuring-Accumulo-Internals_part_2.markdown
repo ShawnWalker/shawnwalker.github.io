@@ -17,7 +17,7 @@ Next, I want to touch on a proposal to address these issues.
 Proposal
 --------
 
-To address the above concerns, I'm proposing two related changes: Introducing
+To address the above concerns, I propose two related changes: Introducing
 dependency injection, and reorganizing Accumulo into a partially tiered
 architecture.
 
@@ -51,6 +51,8 @@ With the adoption of dependency injection I hope to address the issues of:
   should be possible to perform some types of tests currently requiring a
   MiniAccumuloCluster within a single JVM.
 
+Partially Tiered Architecture
+=============================
 Some investigation leads me to believe that the moving Accumulo to using
 dependency injection won't be straightforward.  Largely due to poor separation
 of concerns.  
@@ -64,8 +66,6 @@ ZooKeeper access objects should take this responsibility.
 As such, I believe to make best use of dependency injection, we will need to
 redesign portions of Accumulo to better separate concerns.
 
-Partially Tiered Architecture
-=============================
 Better separation of concerns is a worthy goal on its own.  I don't have
 anything approaching a complete design in mind, but rather a sketch of a design.
 
@@ -86,7 +86,7 @@ In this sketch, I've imagined 4 tiers.  From top to bottom:
 
 * Actor tier: Actors work with models and coordinate state-based changes
   affecting one or more model.  Actors may either poll models for changes, or
-  receive notification via events or the (Observer pattern)[https://en.wikipedia.org/wiki/Observer_pattern).
+  receive notification via events or the [Observer pattern](https://en.wikipedia.org/wiki/Observer_pattern).
 
 * Model tier: Models are primarily concerned with maintaining state.  They
   expose interfaces to query and modify that state, and emit events or make
@@ -97,5 +97,5 @@ In this sketch, I've imagined 4 tiers.  From top to bottom:
 
 Up Next
 -------
-In part 3, I outline a roadmap for the changes in this proposal, and discuss some of the challenges and costs involved along the way.
+In [part 3](/2016/07/13/Restructuring-Accumulo-Internals_part_3.html), I outline a roadmap for the changes in this proposal, and discuss some of the challenges and costs involved along the way.
 

@@ -52,7 +52,10 @@ threads) in a timely manner in preparation for shutdown.
 
 In general performing a "clean" shutdown of a complex application is a hard
 problem, and one I'm not necessarily advocating we spend significant resources
-on.  Indeed, I'm an advocate of [Crash-Only Software](https://www.usenix.org/legacy/events/hotos03/tech/full_papers/candea/candea.pdf) design.
+on.  Indeed, I'm an advocate of [Crash-Only Software](https://www.usenix.org/legacy/events/hotos03/tech/full_papers/candea/candea.pdf)
+design, whose central tenet can be stated as: the only way to shutdown
+the application is to crash it; the only way to start the application is to
+initiate crash recovery."
 
 But there are two scenarios which I'd like to see Accumulo support:
 
@@ -61,7 +64,7 @@ But there are two scenarios which I'd like to see Accumulo support:
   Such a capability is essential for software run within a multitenant container
   (e.g. Tomcat, JBoss).
 * Single JVM (partial) integration testing.  Currently most of Accumulo's
-  integration tests depend upon `MiniAccumuloCluster`, and depends on process
+  integration tests use `MiniAccumuloCluster`, and depend on process
   isolation to ensure that the test framework can recover resources.  This
   choice makes it more difficult to debug tests.
 
@@ -75,15 +78,14 @@ code smells and antipatterns:
 * [The Blob](https://sourcemaking.com/antipatterns/the-blob)/"God class" antipattern
   (notably `master.Master` and `tserver.TabletServer`).
 * [Lava Flow](https://sourcemaking.com/antipatterns/lava-flow) antipattern /
-  "Dead code" code smell.
-  Another developer related to me the other day why Accumulo sports two classes
-named `ZooReaderWriter` and two classes named `ZooCache`.  A story which boiled
-down to "The issue of removing one of each pair didn't help address the problem being solved,
-and so was not attempted."
+  "Dead code" code smell. Another developer related to me the other day why 
+  Accumulo sports two classes named `ZooReaderWriter` and two classes named
+  `ZooCache`.  A story which boiled down to "The issue of removing one 
+  of each pair didn't help address the problem being solved, and so was not attempted."
 * [Shotgun Surgery](https://sourcemaking.com/refactoring/smells/shotgun-surgery)
   code smell.
 
-
 Up next
 -------
-In [Part 2](/2016/07/12/Restructuring-Accumulo-Internals_part_2.html), I outline my proposal for addressing these issues.
+In [Part 2](/2016/07/12/Restructuring-Accumulo-Internals_part_2.html), I outline my
+proposal for addressing these issues.
