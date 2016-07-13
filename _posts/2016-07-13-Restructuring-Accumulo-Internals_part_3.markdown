@@ -90,17 +90,15 @@ Challenges
    individual components requires careful modular design of the wiring modules, and is 
    not well supported in Guice's stock wiring EDSL.
 2. Ideally, a component in an Object Oriented application should be ready to use
-  as soon as it is completely constructed (and possibly initialized).  Unfortunately,
-  many concerns in Accumulo are currently written in a procedural and strictly ordered 
-  fashion, where a procedure has responsibility for executing a collection of actions 
-  touching multiple components in a specific order.
-  For example:
+   as soon as it is completely constructed (and possibly initialized).  Unfortunately,
+   many concerns in Accumulo are currently written in a procedural and strictly ordered 
+   fashion, where a procedure has responsibility for executing a collection of actions 
+   touching multiple components in a specific order. Some such concerns will be more 
+   appropriately represented by distributing initialization and state change among 
+   components.  Others will be more problematic.  Examples of such ordered concerns:
  * `Accumulo.init()` with various initialization concerns.
  * Master's upgrade process.
  * Master's and TServer's state automata.
-
- Some such concerns will be more appropriately represented by distributing initialization 
- and state change among components.  Others will be more problematic.
 
 3. `TabletServer` and `Master` are "god "objects in order to allow components to easily
   gain access to dependencies they might need by just holding a single reference.  While
